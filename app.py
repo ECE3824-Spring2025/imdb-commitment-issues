@@ -41,11 +41,14 @@ def get_movies():
     else:
         return jsonify({"error": "Invalid genre"}), 400
 
+    for i, movie in enumerate(movies):
+        movie['votes'] = votes[i]['votes']
+
     if sort_by == 'score':
         movies = sorted(movies, key=lambda x: x['rating'], reverse=True)
     elif sort_by == 'votes':
         # Ensure `votes` field is properly parsed into integers
-        movies = sorted(votes, key=lambda x: int(x['votes'].replace('M', '000000').replace('K', '000').replace('.', '')), reverse=True)
+        movies = sorted(movies, key=lambda x: int(x['votes'].replace('M', '000000').replace('K', '000').replace('.', '')), reverse=True)
     else:
         return jsonify({"error": "Invalid sort criteria"}), 400
 
