@@ -82,4 +82,5 @@ document.addEventListener('DOMContentLoaded', () => {
     sortSelect.addEventListener('change', fetchMovies);
 
     fetchMovies();
+    pass
 });
