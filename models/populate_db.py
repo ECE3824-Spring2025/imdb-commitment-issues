@@ -11,11 +11,20 @@ from data.movie_data import (
 )
 from app import create_app  # Import existing app
 
+DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "database.db"))
+
 def populate_database():
-    """Populates the database with initial movie data."""
+    """Deletes the existing database and creates a new one from scratch."""
+    # Delete the existing database file
+    if os.path.exists(DB_PATH):
+        os.remove(DB_PATH)
+        print("Deleted existing database.db")
+
+    # Create a new Flask app instance
     app = create_app()
+    
     with app.app_context():
-        db.create_all()  # Ensure tables exist
+        db.create_all()  # Recreate all tables from models
 
         movie_data = [
             (ListWithRatingAction, "action", "Top by Rating"),
@@ -38,7 +47,7 @@ def populate_database():
                 db.session.add(new_movie)
 
         db.session.commit()
-        print("Database populated successfully!")
+        print("Database created and populated successfully!")
 
 if __name__ == "__main__":
     populate_database()
