@@ -1,7 +1,6 @@
 import os
 from flask import Flask
 from models import db
-from flask_sqlalchemy import SQLAlchemy
 
 # Configuration settings
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
