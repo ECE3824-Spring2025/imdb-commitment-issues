@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, render_template, request 
-from controllers.movie_controller import get_movies_by_genre_and_sort, add_favorite, remove_favorite
+from controllers.movie_controller import get_movies_by_genre_and_sort, add_favorite, remove_favorite, get_favorites
 
 # Create a Blueprint for movie-related routes
 movie_bp = Blueprint('movie_bp', __name__)
@@ -42,3 +42,13 @@ def unfavorite_movie(movie_id):
   if not result:
     return jsonify({"message": "Movie not in favorites"}), 400
   return jsonify({"message": "Movie removed from favorites"}), 200
+
+@movie_bp.route('/favorites', methods=['GET'])
+def fetch_favorites():
+    favorites = get_favorites()
+    movie_list = [{
+        'id': movie.id,  # Ensure IDs are included
+        'name': movie.title
+    } for movie in favorites]
+    return jsonify(movie_list)
+

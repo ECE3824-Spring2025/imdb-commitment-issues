@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_KEY = '61c678e1170ca246fbfbdeecc7aa373b'; // TMDb API key
     const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'; // Adjust the size if needed
 
-    const updateTable = async (movies) => {
+    const updateTable = async (movies, favoriteIds) => {
         movieTableBody.innerHTML = '';
         const sortBy = sortSelect.value;
 
@@ -31,7 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><img src="${posterPath}" alt="${movie.name} Poster" width="50"></td> <!-- Poster Column -->
                 <td class="score-column">${movie.rating || ''}</td>
                 <td class="votes-column">${movie.votes || ''}</td>
-                <td><button class="favorite-btn" data-id="${movie.id}">⭐</button></td>
+                <td>
+                    <button class="favorite-btn ${favoriteIds.has(movie.id) ? 'favorited' : ''}" 
+                            data-id="${movie.id}">
+                        ${favoriteIds.has(movie.id) ? '❤️' : '🤍'}
+                    </button>
+                </td>            
             `;
 
             // Hide/show values in each row based on sorting
@@ -68,9 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortBy = sortSelect.value;
 
         try {
-            const response = await fetch(`/movies?genre=${genre}&sortBy=${sortBy}`);
-            const movies = await response.json();
-            await updateTable(movies);
+         // Fetch movies and favorites in parallel
+         const [moviesResponse, favoritesResponse] = await Promise.all([
+            fetch(`/movies?genre=${genre}&sortBy=${sortBy}`),
+            fetch(`/favorites`)
+        ]);
+
+        const movies = await moviesResponse.json();
+        const favoriteMovies = await favoritesResponse.json();
+        const favoriteIds = new Set(favoriteMovies.map(movie => movie.id));
+
+        await updateTable(movies, favoriteIds);
         } catch (error) {
             console.error('Failed to fetch movies:', error);
         }
@@ -91,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = JSON.parse(text);
                 if (response.ok) {
                     event.target.classList.toggle('favorited');
-                    event.target.textContent = isFavorited ? '⭐' : '✅';
+                    event.target.textContent = isFavorited ? '🤍' : '❤️';
                 } else {
                     console.error('Failed:', result.message);
                 }
