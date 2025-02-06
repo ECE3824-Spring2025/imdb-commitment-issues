@@ -4,7 +4,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from models import db
-from models.movie import Movie
+from models.movie import Movie, Favorite
 from data.movie_data import (
     ListWithRatingDrama, ListWithRatingAction, ListWithRatingComedy,
     ListWithLikesDrama, ListWithLikesAction, ListWithLikesComedy

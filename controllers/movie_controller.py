@@ -1,4 +1,4 @@
-from models.movie import Movie
+from models.movie import Movie, Favorite
 from models import db
 
 def get_movies_by_genre_and_sort(genre, sort_by):
@@ -30,6 +30,28 @@ def get_movies_by_genre_and_sort(genre, sort_by):
     else:
         return None
     
+def add_favorite(movie_id):
+    if not Movie.query.get(movie_id):
+        return None
+    
+    if Favorite.query.filter_by(movie_id=movie_id).first():
+        return False
+    
+    favorite = Favorite(movie_id=movie_id)
+    db.session.add(favorite)
+    db.session.commit()
+    return True
+
+def remove_favorite(movie_id):
+    favorite = Favorite.query.filter_by(movie_id=movie_id).first()
+
+    if not favorite:
+        return False
+    
+    db.session.delete(favorite)
+    db.session.commit()
+    return True
+
 def get_all_movies():
     """Returns all movies in the database."""
     return Movie.query.all()
@@ -37,3 +59,7 @@ def get_all_movies():
 def get_movie_by_id(movie_id):
     """Fetches a single movie by ID"""
     return Movie.query.get(movie_id)
+
+def get_favorites():
+    favorite = Favorite.query.all()
+    return [Movie.query.get(fav.movie_id) for fav in favorite]

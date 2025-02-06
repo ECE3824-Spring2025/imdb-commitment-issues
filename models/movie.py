@@ -10,3 +10,10 @@ class Movie(db.Model):
 
     def __repr__(self):
         return f"<Movie {self.title} - {self.genre} - {self.category}>"
+
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f"<Favorite Movie ID {self.movie_id}>"

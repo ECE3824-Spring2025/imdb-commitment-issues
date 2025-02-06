@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td><img src="${posterPath}" alt="${movie.name} Poster" width="50"></td> <!-- Poster Column -->
                 <td class="score-column">${movie.rating || ''}</td>
                 <td class="votes-column">${movie.votes || ''}</td>
+                <td><button class="favorite-btn" data-id="${movie.id}">⭐</button></td>
             `;
 
             // Hide/show values in each row based on sorting
@@ -44,6 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             movieTableBody.appendChild(row);
         }
+
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', toggleFavorite);
+        });
+
     };
 
     async function fetchMoviePoster(title) {
@@ -67,6 +73,33 @@ document.addEventListener('DOMContentLoaded', () => {
             await updateTable(movies);
         } catch (error) {
             console.error('Failed to fetch movies:', error);
+        }
+    };
+
+    const toggleFavorite = async (event) => {
+        const movieId = event.target.getAttribute('data-id');
+        const isFavorited = event.target.classList.contains('favorited');
+        const url = isFavorited ? `/unfavorite/${movieId}` : `/favorite/${movieId}`;
+        const method = isFavorited ? 'DELETE' : 'POST';
+
+        try {
+            const response = await fetch(url, { method });
+
+            // Check if the response is actually JSON
+            const text = await response.text();
+            try {
+                const result = JSON.parse(text);
+                if (response.ok) {
+                    event.target.classList.toggle('favorited');
+                    event.target.textContent = isFavorited ? '⭐' : '✅';
+                } else {
+                    console.error('Failed:', result.message);
+                }
+            } catch (jsonError) {
+                console.error('Server returned non-JSON:', text);
+            }
+        } catch (error) {
+            console.error('Failed to update favorite:', error);
         }
     };
 
