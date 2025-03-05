@@ -1,71 +1,45 @@
-# IMDb Top 10 Movie Viewer
-
-This project is a simple Flask-based web application that allows users to view the top 10 movies in different genres (Drama, Action, Comedy) sorted by IMDb score or the number of votes. Users can also add movies to their favorites list and manage them easily.
-
----
-
-## Features
-- Browse top 10 movies by genre.
-- Sort movies by IMDb score or the number of votes.
-- Add and remove movies from a personalized favorites list.
-- Favorites are saved locally in a JSON file (`favorites.json`).
-
----
+## Description
+This project is a movie library webapp that allows users to view the top 100 movies and tv shows found in IMDb Non-Commerical Dataset. Users are able to search for a specific movie or tv show and favorite it. They also can sort by the IMDb score and number of votes and the choose which movie genres to display.
 
 ## Installation
-
 ### Prerequisites
-Ensure you have the following installed on your system:
-1. Python 3.7 or higher
-2. pip (Python package manager)
+- NPM: To run the client
+- IMDb Datasets
+    - https://datasets.imdbws.com/title.basics.tsv.gz
+    - https://datasets.imdbws.com/title.ratings.tsv.gz
 
-### Required Python Libraries
-- Flask
+### Steps
+Clone the repository:
+```
+git clone https://github.com/ECE3824-Spring2025/imdb-commitment-issues.git
+```
 
----
+Create the environment
+```
+cd imdb-commitment-issues
+py -3 -m venv .venv
+.venv\Scripts\activate
+```
 
-### Install Instructions
-1. Clone this repository to your local machine:
-    ```bash
-    cd ~
-    https://github.com/ECE3824-Spring2025/imdb-commitment-issues.git
-    ```
+Install dependencies
+```
+pip install -r requirements.txt
+```
 
-2. Install the required dependencies:
-    ```bash
-    pip install flask imdb
-    ```
+Start the development server
+```
+npm run dev
+```
 
----
-
-## How to Run
-1. Navigate to the project directory.
-2. Start the Flask application:
-    ```bash
-    cd ~/imdb-commitment-issues
-    python app.py
-    ```
-
-3. Open your web browser and go to:
-    ```
-    http://127.0.0.1:5000/
-    ```
-
----
+Open browser and visit
+```
+http://localhost:3000/
+```
 
 ## Project Instructions
 ### Basic Usage
-1. Select a **genre** from the dropdown (Drama, Action, or Comedy).
-2. Select a **sorting option** (IMDb score or number of votes).
-3. Browse the top 10 movies for the selected genre and sorting criteria.
-4. Click the **Favorite** button to add a movie to your favorites.
-5. Click the **Unfavorite** button to remove a movie from your favorites.
-
----
-
-## Notes
-- The favorites list is stored in `favorites.json`. Ensure this file is writable in the project directory.
-- If you wish to pre-populate movie data, update the `movie_data.py` file with the desired movie lists.
-
----
-
+1. Select a **format** (Movie/TV Show)
+2. Select a **sorting option** (Most Popular/Top Rated/Favorited)
+3. Select a **genre** from the dropdown
+4. Browse the movie list
+5. Click the **favorite** button to add movie to favorited or remove it from the list
