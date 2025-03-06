@@ -1,0 +1,201 @@
+tconst,titleType,primaryTitle,originalTitle,isAdult,startYear,endYear,runtimeMinutes,genres,averageRating,numVotes
+tt0111161,movie,The Shawshank Redemption,The Shawshank Redemption,False,1994.0,,142.0,Drama,9.3,3011640
+tt0468569,movie,The Dark Knight,The Dark Knight,False,2008.0,,152.0,"Action,Crime,Drama",9.0,2988517
+tt1375666,movie,Inception,Inception,False,2010.0,,148.0,"Action,Adventure,Sci-Fi",8.8,2655850
+tt0137523,movie,Fight Club,Fight Club,False,1999.0,,139.0,Drama,8.8,2434661
+tt0109830,movie,Forrest Gump,Forrest Gump,False,1994.0,,142.0,"Drama,Romance",8.8,2354819
+tt0110912,movie,Pulp Fiction,Pulp Fiction,False,1994.0,,154.0,"Crime,Drama",8.9,2309588
+tt0816692,movie,Interstellar,Interstellar,False,2014.0,,169.0,"Adventure,Drama,Sci-Fi",8.7,2292493
+tt0133093,movie,The Matrix,The Matrix,False,1999.0,,136.0,"Action,Sci-Fi",8.7,2134911
+tt0068646,movie,The Godfather,The Godfather,False,1972.0,,175.0,"Crime,Drama",9.2,2101692
+tt0120737,movie,The Lord of the Rings: The Fellowship of the Ring,The Lord of the Rings: The Fellowship of the Ring,False,2001.0,,178.0,"Adventure,Drama,Fantasy",8.9,2087852
+tt0167260,movie,The Lord of the Rings: The Return of the King,The Lord of the Rings: The Return of the King,False,2003.0,,201.0,"Adventure,Drama,Fantasy",9.0,2058986
+tt1345836,movie,The Dark Knight Rises,The Dark Knight Rises,False,2012.0,,164.0,"Action,Drama,Thriller",8.4,1895819
+tt0114369,movie,Se7en,Se7en,False,1995.0,,127.0,"Crime,Drama,Mystery",8.6,1887426
+tt0167261,movie,The Lord of the Rings: The Two Towers,The Lord of the Rings: The Two Towers,False,2002.0,,179.0,"Adventure,Drama,Fantasy",8.8,1855446
+tt1853728,movie,Django Unchained,Django Unchained,False,2012.0,,165.0,"Comedy,Drama,Western",8.5,1769246
+tt0172495,movie,Gladiator,Gladiator,False,2000.0,,155.0,"Action,Adventure,Drama",8.5,1736844
+tt0993846,movie,The Wolf of Wall Street,The Wolf of Wall Street,False,2013.0,,180.0,"Biography,Comedy,Crime",8.2,1663099
+tt0361748,movie,Inglourious Basterds,Inglourious Basterds,False,2009.0,,153.0,"Adventure,Drama,War",8.4,1660452
+tt0372784,movie,Batman Begins,Batman Begins,False,2005.0,,140.0,"Action,Drama",8.2,1632293
+tt0102926,movie,The Silence of the Lambs,The Silence of the Lambs,False,1991.0,,118.0,"Crime,Drama,Horror",8.6,1616896
+tt7286456,movie,Joker,Joker,False,2019.0,,122.0,"Crime,Drama,Thriller",8.3,1589188
+tt0120815,movie,Saving Private Ryan,Saving Private Ryan,False,1998.0,,169.0,"Drama,War",8.6,1554540
+tt1130884,movie,Shutter Island,Shutter Island,False,2010.0,,138.0,"Drama,Mystery,Thriller",8.2,1530514
+tt0108052,movie,Schindler's List,Schindler's List,False,1993.0,,195.0,"Biography,Drama,History",9.0,1508035
+tt0482571,movie,The Prestige,The Prestige,False,2006.0,,130.0,"Drama,Mystery,Sci-Fi",8.5,1499624
+tt0848228,movie,The Avengers,The Avengers,False,2012.0,,143.0,"Action,Sci-Fi",8.0,1497075
+tt0076759,movie,Star Wars: Episode IV - A New Hope,Star Wars,False,1977.0,,121.0,"Action,Adventure,Fantasy",8.6,1495549
+tt0407887,movie,The Departed,The Departed,False,2006.0,,151.0,"Crime,Drama,Thriller",8.5,1473705
+tt0120689,movie,The Green Mile,The Green Mile,False,1999.0,,189.0,"Crime,Drama,Fantasy",8.6,1470135
+tt0080684,movie,Star Wars: Episode V - The Empire Strikes Back,Star Wars: Episode V - The Empire Strikes Back,False,1980.0,,124.0,"Action,Adventure,Fantasy",8.7,1427906
+tt0499549,movie,Avatar,Avatar,False,2009.0,,162.0,"Action,Adventure,Fantasy",7.9,1421703
+tt0071562,movie,The Godfather Part II,The Godfather Part II,False,1974.0,,202.0,"Crime,Drama",9.0,1415957
+tt0209144,movie,Memento,Memento,False,2000.0,,113.0,"Mystery,Thriller",8.4,1367325
+tt0088763,movie,Back to the Future,Back to the Future,False,1985.0,,116.0,"Adventure,Comedy,Sci-Fi",8.5,1363374
+tt4154796,movie,Avengers: Endgame,Avengers: Endgame,False,2019.0,,181.0,"Action,Adventure,Sci-Fi",8.4,1335843
+tt0120338,movie,Titanic,Titanic,False,1997.0,,194.0,"Drama,Romance",7.9,1328271
+tt0099685,movie,Goodfellas,GoodFellas,False,1990.0,,145.0,"Biography,Crime,Drama",8.7,1311181
+tt2015381,movie,Guardians of the Galaxy,Guardians of the Galaxy,False,2014.0,,121.0,"Action,Adventure,Comedy",8.0,1307695
+tt0110413,movie,Léon: The Professional,Léon,False,1994.0,,110.0,"Action,Crime,Drama",8.5,1292070
+tt4154756,movie,Avengers: Infinity War,Avengers: Infinity War,False,2018.0,,149.0,"Action,Adventure,Sci-Fi",8.4,1269552
+tt0120382,movie,The Truman Show,The Truman Show,False,1998.0,,103.0,"Comedy,Drama",8.2,1261767
+tt0325980,movie,Pirates of the Caribbean: The Curse of the Black Pearl,Pirates of the Caribbean: The Curse of the Black Pearl,False,2003.0,,143.0,"Action,Adventure,Fantasy",8.1,1253888
+tt0910970,movie,WALL·E,WALL·E,False,2008.0,,98.0,"Adventure,Animation,Family",8.4,1248254
+tt0169547,movie,American Beauty,American Beauty,False,1999.0,,122.0,Drama,8.3,1241415
+tt0266697,movie,Kill Bill: Vol. 1,Kill Bill: Vol. 1,False,2003.0,,111.0,"Action,Crime,Thriller",8.2,1239104
+tt0120586,movie,American History X,American History X,False,1998.0,,119.0,"Crime,Drama",8.5,1222639
+tt0103064,movie,Terminator 2: Judgment Day,Terminator 2: Judgment Day,False,1991.0,,137.0,"Action,Adventure,Sci-Fi",8.6,1220664
+tt0434409,movie,V for Vendetta,V for Vendetta,False,2005.0,,132.0,"Action,Drama,Sci-Fi",8.1,1208163
+tt1431045,movie,Deadpool,Deadpool,False,2016.0,,108.0,"Action,Comedy",8.0,1193229
+tt0110357,movie,The Lion King,The Lion King,False,1994.0,,88.0,"Adventure,Animation,Drama",8.5,1190993
+tt0114814,movie,The Usual Suspects,The Usual Suspects,False,1995.0,,106.0,"Crime,Drama,Mystery",8.5,1180978
+tt1049413,movie,Up,Up,False,2009.0,,96.0,"Adventure,Animation,Comedy",8.3,1169626
+tt0371746,movie,Iron Man,Iron Man,False,2008.0,,126.0,"Action,Adventure,Sci-Fi",7.9,1162344
+tt0081505,movie,The Shining,The Shining,False,1980.0,,146.0,"Drama,Horror",8.4,1156195
+tt0086190,movie,Star Wars: Episode VI - Return of the Jedi,Star Wars: Episode VI - Return of the Jedi,False,1983.0,,131.0,"Action,Adventure,Fantasy",8.3,1155210
+tt1392190,movie,Mad Max: Fury Road,Mad Max: Fury Road,False,2015.0,,120.0,"Action,Adventure,Sci-Fi",8.1,1154865
+tt0264464,movie,Catch Me If You Can,Catch Me If You Can,False,2002.0,,141.0,"Biography,Crime,Drama",8.1,1150317
+tt0266543,movie,Finding Nemo,Finding Nemo,False,2003.0,,100.0,"Adventure,Animation,Comedy",8.2,1149735
+tt0338013,movie,Eternal Sunshine of the Spotless Mind,Eternal Sunshine of the Spotless Mind,False,2004.0,,108.0,"Drama,Romance,Sci-Fi",8.3,1125266
+tt0119217,movie,Good Will Hunting,Good Will Hunting,False,1997.0,,126.0,"Drama,Romance",8.3,1123956
+tt0105236,movie,Reservoir Dogs,Reservoir Dogs,False,1992.0,,99.0,"Crime,Thriller",8.3,1123934
+tt0112573,movie,Braveheart,Braveheart,False,1995.0,,178.0,"Biography,Drama,War",8.3,1122038
+tt0114709,movie,Toy Story,Toy Story,False,1995.0,,81.0,"Adventure,Animation,Comedy",8.3,1111708
+tt2267998,movie,Gone Girl,Gone Girl,False,2014.0,,149.0,"Drama,Mystery,Thriller",8.1,1110522
+tt0477348,movie,No Country for Old Men,No Country for Old Men,False,2007.0,,122.0,"Crime,Drama,Thriller",8.2,1109307
+tt0107290,movie,Jurassic Park,Jurassic Park,False,1993.0,,127.0,"Action,Adventure,Sci-Fi",8.2,1108072
+tt0073486,movie,One Flew Over the Cuckoo's Nest,One Flew Over the Cuckoo's Nest,False,1975.0,,133.0,Drama,8.7,1107916
+tt0167404,movie,The Sixth Sense,The Sixth Sense,False,1999.0,,107.0,"Drama,Mystery,Thriller",8.2,1089874
+tt0082971,movie,Raiders of the Lost Ark,Raiders of the Lost Ark,False,1981.0,,115.0,"Action,Adventure",8.4,1066654
+tt2582802,movie,Whiplash,Whiplash,False,2014.0,,106.0,"Drama,Music",8.5,1055613
+tt6751668,movie,Parasite,Gisaengchung,False,2019.0,,132.0,"Drama,Thriller",8.5,1039068
+tt1392170,movie,The Hunger Games,The Hunger Games,False,2012.0,,142.0,"Action,Adventure,Sci-Fi",7.2,1033279
+tt0198781,movie,"Monsters, Inc.","Monsters, Inc.",False,2001.0,,92.0,"Adventure,Animation,Comedy",8.1,1017936
+tt0268978,movie,A Beautiful Mind,A Beautiful Mind,False,2001.0,,135.0,"Biography,Drama,Mystery",8.2,1015053
+tt0078748,movie,Alien,Alien,False,1979.0,,117.0,"Horror,Sci-Fi",8.5,1006379
+tt2488496,movie,Star Wars: Episode VII - The Force Awakens,Star Wars: Episode VII - The Force Awakens,False,2015.0,,138.0,"Action,Adventure,Sci-Fi",7.8,993950
+tt1201607,movie,Harry Potter and the Deathly Hallows: Part 2,Harry Potter and the Deathly Hallows - Part 2,False,2011.0,,130.0,"Adventure,Family,Fantasy",8.1,987268
+tt0095016,movie,Die Hard,Die Hard,False,1988.0,,132.0,"Action,Thriller",8.2,983334
+tt1675434,movie,The Intouchables,Intouchables,False,2011.0,,112.0,"Comedy,Drama",8.5,968156
+tt0075314,movie,Taxi Driver,Taxi Driver,False,1976.0,,114.0,"Crime,Drama",8.2,967465
+tt3659388,movie,The Martian,The Martian,False,2015.0,,144.0,"Adventure,Drama,Sci-Fi",8.0,959950
+tt0253474,movie,The Pianist,The Pianist,False,2002.0,,150.0,"Biography,Drama,Music",8.5,957190
+tt0088247,movie,The Terminator,The Terminator,False,1984.0,,107.0,"Action,Adventure,Sci-Fi",8.1,956549
+tt0086250,movie,Scarface,Scarface,False,1983.0,,170.0,"Crime,Drama",8.3,954019
+tt2395427,movie,Avengers: Age of Ultron,Avengers: Age of Ultron,False,2015.0,,141.0,"Action,Adventure,Sci-Fi",7.3,951756
+tt1160419,movie,Dune: Part One,Dune: Part One,False,2021.0,,155.0,"Action,Adventure,Drama",8.0,942625
+tt0208092,movie,Snatch,Snatch,False,2000.0,,102.0,"Comedy,Crime",8.2,938486
+tt10872600,movie,Spider-Man: No Way Home,Spider-Man: No Way Home,False,2021.0,,148.0,"Action,Adventure,Fantasy",8.2,935871
+tt0180093,movie,Requiem for a Dream,Requiem for a Dream,False,2000.0,,102.0,Drama,8.3,930902
+tt1843866,movie,Captain America: The Winter Soldier,Captain America: The Winter Soldier,False,2014.0,,136.0,"Action,Adventure,Sci-Fi",7.7,926486
+tt0800369,movie,Thor,Thor,False,2011.0,,115.0,"Action,Fantasy",7.0,926222
+tt1300854,movie,Iron Man 3,Iron Man Three,False,2013.0,,130.0,"Action,Adventure,Sci-Fi",7.1,924700
+tt0458339,movie,Captain America: The First Avenger,Captain America: The First Avenger,False,2011.0,,124.0,"Action,Adventure,Sci-Fi",6.9,924697
+tt0435761,movie,Toy Story 3,Toy Story 3,False,2010.0,,103.0,"Adventure,Animation,Comedy",8.3,923466
+tt2278388,movie,The Grand Budapest Hotel,The Grand Budapest Hotel,False,2014.0,,99.0,"Adventure,Comedy,Crime",8.1,918376
+tt0145487,movie,Spider-Man,Spider-Man,False,2002.0,,121.0,"Action,Adventure,Sci-Fi",7.4,914018
+tt0050083,movie,12 Angry Men,12 Angry Men,False,1957.0,,96.0,"Crime,Drama",9.0,913016
+tt0066921,movie,A Clockwork Orange,A Clockwork Orange,False,1971.0,,136.0,"Crime,Sci-Fi",8.2,905350
+tt1663202,movie,The Revenant,The Revenant,False,2015.0,,156.0,"Action,Adventure,Drama",8.0,904367
+tt0903624,movie,The Hobbit: An Unexpected Journey,The Hobbit: An Unexpected Journey,False,2012.0,,169.0,"Adventure,Fantasy",7.8,897749
+tt0944947,tvSeries,Game of Thrones,Game of Thrones,False,2011.0,2019.0,60.0,"Action,Adventure,Drama",9.2,2404202
+tt0903747,tvSeries,Breaking Bad,Breaking Bad,False,2008.0,2013.0,45.0,"Crime,Drama,Thriller",9.5,2287863
+tt4574334,tvSeries,Stranger Things,Stranger Things,False,2016.0,2025.0,60.0,"Drama,Fantasy,Horror",8.7,1421619
+tt0108778,tvSeries,Friends,Friends,False,1994.0,2004.0,22.0,"Comedy,Romance",8.9,1133203
+tt1520211,tvSeries,The Walking Dead,The Walking Dead,False,2010.0,2022.0,45.0,"Drama,Horror,Thriller",8.1,1128589
+tt1475582,tvSeries,Sherlock,Sherlock,False,2010.0,2017.0,90.0,"Crime,Drama,Mystery",9.1,1038473
+tt0898266,tvSeries,The Big Bang Theory,The Big Bang Theory,False,2007.0,2019.0,22.0,"Comedy,Romance",8.1,900042
+tt0773262,tvSeries,Dexter,Dexter,False,2006.0,2013.0,60.0,"Crime,Drama,Mystery",8.6,827122
+tt0386676,tvSeries,The Office,The Office,False,2005.0,2013.0,22.0,Comedy,9.0,763182
+tt1190634,tvSeries,The Boys,The Boys,False,2019.0,,60.0,"Action,Comedy,Crime",8.6,758091
+tt0460649,tvSeries,How I Met Your Mother,How I Met Your Mother,False,2005.0,2014.0,23.0,"Comedy,Drama,Romance",8.3,753853
+tt3032476,tvSeries,Better Call Saul,Better Call Saul,False,2015.0,2022.0,45.0,"Crime,Drama",9.0,713694
+tt2442560,tvSeries,Peaky Blinders,Peaky Blinders,False,2013.0,2022.0,60.0,"Crime,Drama",8.7,698969
+tt2356777,tvSeries,True Detective,True Detective,False,2014.0,,60.0,"Crime,Drama,Mystery",8.9,692635
+tt2085059,tvSeries,Black Mirror,Black Mirror,False,2011.0,,60.0,"Crime,Drama,Mystery",8.7,672502
+tt10919420,tvSeries,Squid Game,Ojing-eo geim,False,2021.0,2025.0,60.0,"Action,Drama,Mystery",8.0,645605
+tt2861424,tvSeries,Rick and Morty,Rick and Morty,False,2013.0,,23.0,"Adventure,Animation,Comedy",9.1,639129
+tt0411008,tvSeries,Lost,Lost,False,2004.0,2010.0,45.0,"Adventure,Drama,Fantasy",8.3,632297
+tt0455275,tvSeries,Prison Break,Prison Break,False,2005.0,2017.0,44.0,"Action,Crime,Drama",8.3,617659
+tt8111088,tvSeries,The Mandalorian,The Mandalorian,False,2019.0,,40.0,"Action,Adventure,Fantasy",8.6,616416
+tt2306299,tvSeries,Vikings,Vikings,False,2013.0,2020.0,45.0,"Action,Adventure,Drama",8.5,611186
+tt3581920,tvSeries,The Last of Us,The Last of Us,False,2023.0,,50.0,"Action,Adventure,Drama",8.7,609235
+tt5180504,tvSeries,The Witcher,The Witcher,False,2019.0,,60.0,"Action,Adventure,Drama",7.9,591067
+tt2560140,tvSeries,Attack on Titan,Shingeki no Kyojin,False,2013.0,2023.0,24.0,"Action,Adventure,Animation",9.1,587308
+tt6468322,tvSeries,Money Heist,La casa de papel,False,2017.0,2021.0,60.0,"Action,Crime,Drama",8.2,563703
+tt0412142,tvSeries,House,House M.D.,False,2004.0,2012.0,45.0,"Drama,Mystery",8.7,549111
+tt0475784,tvSeries,Westworld,Westworld,False,2016.0,2022.0,60.0,"Drama,Mystery,Sci-Fi",8.5,545272
+tt1856010,tvSeries,House of Cards,House of Cards,False,2013.0,2018.0,50.0,Drama,8.6,543872
+tt0141842,tvSeries,The Sopranos,The Sopranos,False,1999.0,2007.0,60.0,"Crime,Drama",9.2,513936
+tt1442437,tvSeries,Modern Family,Modern Family,False,2009.0,2020.0,22.0,"Comedy,Drama,Romance",8.5,509858
+tt1632701,tvSeries,Suits,Suits,False,2011.0,2019.0,45.0,"Comedy,Drama",8.4,508430
+tt0460681,tvSeries,Supernatural,Supernatural,False,2005.0,2020.0,44.0,"Drama,Fantasy,Horror",8.4,505429
+tt2707408,tvSeries,Narcos,Narcos,False,2015.0,2017.0,50.0,"Biography,Crime,Drama",8.7,494780
+tt3322312,tvSeries,Daredevil,Daredevil,False,2015.0,2018.0,60.0,"Action,Crime,Drama",8.6,493138
+tt5753856,tvSeries,Dark,Dark,False,2017.0,2020.0,60.0,"Crime,Drama,Mystery",8.7,481592
+tt11198330,tvSeries,House of the Dragon,House of the Dragon,False,2022.0,,50.0,"Action,Adventure,Drama",8.3,467089
+tt2193021,tvSeries,Arrow,Arrow,False,2012.0,2020.0,42.0,"Action,Adventure,Crime",7.5,452308
+tt0096697,tvSeries,The Simpsons,The Simpsons,False,1989.0,,22.0,"Animation,Comedy",8.7,449758
+tt2802850,tvSeries,Fargo,Fargo,False,2014.0,2024.0,60.0,"Crime,Drama,Thriller",8.8,440539
+tt9140554,tvSeries,Loki,Loki,False,2021.0,2023.0,50.0,"Action,Adventure,Fantasy",8.2,436988
+tt4158110,tvSeries,Mr. Robot,Mr. Robot,False,2015.0,2019.0,45.0,"Crime,Drama,Thriller",8.5,436628
+tt7631058,tvSeries,The Lord of the Rings: The Rings of Power,The Lord of the Rings: The Rings of Power,False,2022.0,,60.0,"Action,Adventure,Drama",6.9,419800
+tt0121955,tvSeries,South Park,South Park,False,1997.0,,22.0,"Animation,Comedy",8.7,418794
+tt0877057,tvSeries,Death Note,Death Note: Desu nôto,False,2006.0,2007.0,24.0,"Animation,Crime,Drama",8.9,414102
+tt13443470,tvSeries,Wednesday,Wednesday,False,2022.0,,45.0,"Comedy,Crime,Fantasy",8.0,404804
+tt0417299,tvSeries,Avatar: The Last Airbender,Avatar: The Last Airbender,False,2005.0,2008.0,23.0,"Action,Adventure,Animation",9.3,399031
+tt0306414,tvSeries,The Wire,The Wire,False,2002.0,2008.0,60.0,"Crime,Drama,Thriller",9.3,398496
+tt10986410,tvSeries,Ted Lasso,Ted Lasso,False,2020.0,,30.0,"Comedy,Drama,Sport",8.8,389774
+tt2467372,tvSeries,Brooklyn Nine-Nine,Brooklyn Nine-Nine,False,2013.0,2021.0,22.0,"Comedy,Crime",8.4,388406
+tt11126994,tvSeries,Arcane,Arcane,False,2021.0,2024.0,40.0,"Action,Adventure,Animation",9.0,380103
+tt3107288,tvSeries,The Flash,The Flash,False,2014.0,2023.0,43.0,"Action,Adventure,Drama",7.5,374959
+tt0182576,tvSeries,Family Guy,Family Guy,False,1999.0,,22.0,"Animation,Comedy",8.1,374205
+tt7767422,tvSeries,Sex Education,Sex Education,False,2019.0,2023.0,60.0,"Comedy,Drama,Romance",8.2,373247
+tt4052886,tvSeries,Lucifer,Lucifer,False,2016.0,2021.0,45.0,"Crime,Drama,Fantasy",8.0,371983
+tt1796960,tvSeries,Homeland,Homeland,False,2011.0,2020.0,60.0,"Crime,Drama,Mystery",8.3,367996
+tt0098904,tvSeries,Seinfeld,Seinfeld,False,1989.0,1998.0,22.0,Comedy,8.9,365754
+tt5071412,tvSeries,Ozark,Ozark,False,2017.0,2022.0,60.0,"Crime,Drama,Thriller",8.5,365611
+tt1405406,tvSeries,The Vampire Diaries,The Vampire Diaries,False,2009.0,2017.0,43.0,"Drama,Fantasy,Horror",7.7,363473
+tt5290382,tvSeries,Mindhunter,Mindhunter,False,2017.0,2019.0,60.0,"Crime,Drama,Mystery",8.6,361856
+tt0413573,tvSeries,Grey's Anatomy,Grey's Anatomy,False,2005.0,,41.0,"Drama,Romance",7.6,355729
+tt1844624,tvSeries,American Horror Story,American Horror Story,False,2011.0,,60.0,"Drama,Horror,Sci-Fi",7.9,352970
+tt1124373,tvSeries,Sons of Anarchy,Sons of Anarchy,False,2008.0,2014.0,45.0,"Crime,Drama,Thriller",8.5,336949
+tt0367279,tvSeries,Arrested Development,Arrested Development,False,2003.0,2019.0,22.0,Comedy,8.7,332806
+tt2372162,tvSeries,Orange Is the New Black,Orange Is the New Black,False,2013.0,2019.0,60.0,"Comedy,Crime,Drama",8.0,327203
+tt1837492,tvSeries,13 Reasons Why,13 Reasons Why,False,2017.0,2020.0,60.0,"Drama,Mystery,Thriller",7.5,326199
+tt7335184,tvSeries,You,You,False,2018.0,2025.0,45.0,"Crime,Drama,Romance",7.7,320960
+tt14392248,tvSeries,Aspirants,Aspirants,False,2021.0,,45.0,Drama,9.2,315088
+tt7660850,tvSeries,Succession,Succession,False,2018.0,2023.0,60.0,"Comedy,Drama",8.8,308179
+tt1586680,tvSeries,Shameless,Shameless,False,2011.0,2021.0,60.0,"Comedy,Drama",8.5,306010
+tt1439629,tvSeries,Community,Community,False,2009.0,2015.0,22.0,Comedy,8.5,301741
+tt1312171,tvSeries,The Umbrella Academy,The Umbrella Academy,False,2019.0,2024.0,60.0,"Action,Adventure,Comedy",7.8,300777
+tt1266020,tvSeries,Parks and Recreation,Parks and Recreation,False,2009.0,2015.0,22.0,Comedy,8.6,300050
+tt12637874,tvSeries,Fallout,Fallout,False,2024.0,,60.0,"Action,Adventure,Drama",8.3,295402
+tt0303461,tvSeries,Firefly,Firefly,False,2002.0,2003.0,45.0,"Adventure,Drama,Sci-Fi",8.9,289128
+tt2243973,tvSeries,Hannibal,Hannibal,False,2013.0,2015.0,45.0,"Crime,Drama,Horror",8.5,288777
+tt2661044,tvSeries,The 100,The 100,False,2014.0,2020.0,43.0,"Action,Drama,Sci-Fi",7.5,288381
+tt0369179,tvSeries,Two and a Half Men,Two and a Half Men,False,2003.0,2015.0,22.0,"Comedy,Romance",7.1,287987
+tt2741602,tvSeries,The Blacklist,The Blacklist,False,2013.0,2023.0,43.0,"Crime,Drama,Mystery",7.9,287729
+tt0388629,tvSeries,One Piece,One Piece: Wan pîsu,False,1999.0,,24.0,"Action,Adventure,Animation",9.0,283268
+tt5675620,tvSeries,The Punisher,The Punisher,False,2017.0,2019.0,60.0,"Action,Crime,Drama",8.4,278510
+tt0285403,tvSeries,Scrubs,Scrubs,False,2001.0,2010.0,22.0,"Comedy,Drama",8.4,276116
+tt0804503,tvSeries,Mad Men,Mad Men,False,2007.0,2015.0,45.0,Drama,8.7,272125
+tt0149460,tvSeries,Futurama,Futurama,False,1999.0,,22.0,"Adventure,Animation,Comedy",8.5,269320
+tt5834204,tvSeries,The Handmaid's Tale,The Handmaid's Tale,False,2017.0,2025.0,60.0,"Drama,Sci-Fi,Thriller",8.4,269294
+tt4786824,tvSeries,The Crown,The Crown,False,2016.0,2023.0,60.0,"Biography,Drama,History",8.6,267817
+tt11280740,tvSeries,Severance,Severance,False,2022.0,,50.0,"Drama,Mystery,Sci-Fi",8.7,267115
+tt8772296,tvSeries,Euphoria,Euphoria,False,2019.0,,55.0,Drama,8.3,266017
+tt0844441,tvSeries,True Blood,True Blood,False,2008.0,2014.0,55.0,"Drama,Fantasy,Mystery",7.9,265020
+tt1442449,tvSeries,Spartacus,Spartacus,False,2010.0,2013.0,60.0,"Action,Adventure,Biography",8.5,264785
+tt14452776,tvSeries,The Bear,The Bear,False,2022.0,,34.0,"Comedy,Drama",8.5,264055
+tt0472954,tvSeries,It's Always Sunny in Philadelphia,It's Always Sunny in Philadelphia,False,2005.0,,22.0,Comedy,8.8,263405
+tt4236770,tvSeries,Yellowstone,Yellowstone,False,2018.0,2024.0,60.0,"Drama,Western",8.6,263096
+tt1119644,tvSeries,Fringe,Fringe,False,2008.0,2013.0,46.0,"Drama,Mystery,Sci-Fi",8.4,263040
+tt0106179,tvSeries,The X-Files,The X Files,False,1993.0,2018.0,45.0,"Adventure,Crime,Drama",8.6,259924
+tt0813715,tvSeries,Heroes,Heroes,False,2006.0,2010.0,45.0,"Crime,Drama,Fantasy",7.5,255551
+tt0436992,tvSeries,Doctor Who,Doctor Who,False,2005.0,2022.0,45.0,"Adventure,Drama,Sci-Fi",8.5,255217
+tt1826940,tvSeries,New Girl,New Girl,False,2011.0,2018.0,22.0,"Comedy,Romance",7.8,253536
+tt3749900,tvSeries,Gotham,Gotham,False,2014.0,2019.0,42.0,"Action,Crime,Drama",7.8,246045
+tt1843230,tvSeries,Once Upon a Time,Once Upon a Time,False,2011.0,2018.0,60.0,"Adventure,Fantasy,Romance",7.7,241744
+tt9288030,tvSeries,Reacher,Reacher,False,2022.0,,50.0,"Action,Crime,Drama",8.0,241340
