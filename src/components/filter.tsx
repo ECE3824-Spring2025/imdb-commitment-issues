@@ -1,6 +1,6 @@
 'use client';
 import { useState, createContext, useContext, useEffect } from 'react';
-import { Box, MultiSelect, Text, Loader, MantineTheme } from '@mantine/core';
+import { Box, MultiSelect, Text, Loader, Badge } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
 
 // Create a context to share the filter state across components
@@ -128,11 +128,22 @@ export default function Filter() {
                 minWidth: '200px',
                 maxWidth: '200px',
                 // Make the actual text transparent when genres are selected
-                color: selectedGenres.length > 0 ? 'transparent' : undefined
+                color: selectedGenres.length > 0 ? 'transparent' : undefined,
+                position: 'relative',
+                zIndex: 0
               },
               rightSection: { pointerEvents: 'none' },
-              dropdown: { width: '200px' },
-              pill: { display: 'none' } // Hide all Mantine's pills
+              dropdown: { 
+                width: '200px',
+                zIndex: 10 // Ensure dropdown is above other elements
+              },
+              pill: { display: 'none' }, // Hide all Mantine's pills
+              item: {
+                // Just highlight selected items but don't hide them 
+                '&[data-selected]': {
+                  backgroundColor: theme.colors.blue[0]
+                }
+              }
             })}
             maxDropdownHeight={280}
           />
@@ -144,46 +155,42 @@ export default function Filter() {
               top: '50%',
               left: '12px',
               transform: 'translateY(-50%)',
-              zIndex: 2,
-              pointerEvents: 'auto',
+              zIndex: 1, // Lower z-index to allow clicks to pass through
+              pointerEvents: 'none', // Ensure clicks pass through to the MultiSelect
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
+              gap: '4px'
             }}>
-              {/* Show first genre as a badge */}
-              <div 
-                style={{
-                  background: '#f1f3f5',
-                  borderRadius: '4px',
-                  padding: '2px 8px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer'
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // Remove the first genre when clicked
-                  const updatedGenres = [...selectedGenres];
-                  updatedGenres.splice(0, 1);
-                  setSelectedGenres(updatedGenres);
-                }}
+              {/* First genre as a badge */}
+              <Badge 
+                variant="light" 
+                color="gray" 
+                radius="sm"
+                styles={(theme) => ({
+                  root: {
+                    border: '1px solid #e9ecef',
+                    background: '#f8f9fa'
+                  }
+                })}
               >
-                {genres.find(g => g.value === selectedGenres[0])?.label || selectedGenres[0]}
-              </div>
+                {selectedGenres[0]}
+              </Badge>
               
               {/* For multiple genres, show "+N" beside the first genre */}
               {selectedGenres.length > 1 && (
-                <div style={{
-                  marginLeft: '6px',
-                  background: '#f1f3f5',
-                  borderRadius: '4px',
-                  padding: '2px 8px',
-                  fontSize: '12px',
-                  fontWeight: 500
-                }}>
+                <Badge 
+                  variant="light" 
+                  color="gray" 
+                  radius="sm"
+                  styles={(theme) => ({
+                    root: {
+                      border: '1px solid #e9ecef',
+                      background: '#f8f9fa'
+                    }
+                  })}
+                >
                   +{selectedGenres.length - 1}
-                </div>
+                </Badge>
               )}
             </div>
           )}

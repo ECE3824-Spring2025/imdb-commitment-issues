@@ -1,7 +1,7 @@
 'use client';
 
 import { Grid, Card, Image, Text, Rating, Flex, ActionIcon, Loader, Badge, Box, Container } from '@mantine/core';
-import { IconHeart, IconHeartFilled, IconStar } from '@tabler/icons-react';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import { memo, useState, useEffect } from 'react';
 
 // Format vote count according to IMDB style (e.g., 1.2M, 934K, 123)
@@ -52,7 +52,7 @@ const MovieCard = memo(({
 
   // TMDB API key - Replace with your actual key
   const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || "68ef6f5d041dc3079fd6f2cfc0a35d2b";
-
+  
   useEffect(() => {
     const fetchMoviePoster = async () => {
       // If the imageUrl is already a TMDB path
@@ -63,26 +63,30 @@ const MovieCard = memo(({
       }
 
       try {
+        console.log(`Fetching poster for movie: ${movie.title}`);
         // Search for the movie in TMDB
         const response = await fetch(
           `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(movie.title)}&include_adult=false`
         );
         
         if (!response.ok) {
-          throw new Error('TMDB API request failed');
+          throw new Error(`TMDB API request failed: ${response.status}`);
         }
         
         const data = await response.json();
         
         // If we found results and the first result has a poster
         if (data.results && data.results.length > 0 && data.results[0].poster_path) {
-          setPosterUrl(`https://image.tmdb.org/t/p/w500${data.results[0].poster_path}`);
+          const posterPath = data.results[0].poster_path;
+          console.log(`Poster found for ${movie.title}: ${posterPath}`);
+          setPosterUrl(`https://image.tmdb.org/t/p/w500${posterPath}`);
         } else {
+          console.log(`No poster found for ${movie.title}, using placeholder`);
           // No poster found, use placeholder
           setPosterUrl(`https://placehold.co/230x288/png?text=${encodeURIComponent(movie.title.slice(0, 20))}`);
         }
       } catch (error) {
-        console.error('Error fetching movie poster:', error);
+        console.error(`Error fetching movie poster for ${movie.title}:`, error);
         setPosterUrl(`https://placehold.co/230x288/png?text=${encodeURIComponent(movie.title.slice(0, 20))}`);
       } finally {
         setIsLoading(false);
@@ -93,16 +97,15 @@ const MovieCard = memo(({
   }, [movie.title, movie.imageUrl, TMDB_API_KEY]);
 
   return (
-    <Card shadow="sm" padding="xs" pos="relative" w={230} style={{ height: '100%' }}>
+    <Card shadow="sm" padding={0} pos="relative" w={230} style={{ height: '100%' }}>
       <Card.Section pos="relative">
         <Image
           src={posterUrl || `https://placehold.co/230x288/png?text=${encodeURIComponent(movie.title.slice(0, 20))}`}
           height={288}
           w={230}
           alt={movie.title}
-          loading="lazy" // Lazy load images
+          style={{ display: 'block' }}
           placeholder={isLoading ? "blur" : undefined}
-          fallbackSrc={`https://placehold.co/230x288/png?text=${encodeURIComponent(movie.title.slice(0, 20))}`}
         />
         
         {/* Rank badge */}
@@ -141,31 +144,31 @@ const MovieCard = memo(({
         </ActionIcon>
       </Card.Section>
       
-      <Flex justify="space-between" align="center" mt="xs">
+      <Box p="xs">
         <Text fw={500} size="14px" lineClamp={2} title={movie.title} style={{ lineHeight: '1.2' }}>
           {movie.title}
         </Text>
-      </Flex>
-      
-      <Flex align="center" mt={4} style={{ flexWrap: 'nowrap', alignItems: 'center' }}>
-        <Rating
-          value={movie.rating / 2} // Normalize to 5-star scale
-          fractions={2}
-          count={5}
-          size={14}
-          readOnly
-        />
-        {movie.rating > 0 && (
-          <Text size="xs" ml={4} style={{ whiteSpace: 'nowrap', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
-            {movie.rating.toFixed(1)}
-            {movie.votes !== undefined && movie.votes > 0 && (
-              <Text component="span" size="xs" c="dimmed" ml={3} style={{ display: 'inline', lineHeight: 1 }}>
-                {" "}({formatVotes(movie.votes)})
-              </Text>
-            )}
-          </Text>
-        )}
-      </Flex>
+        
+        <Flex align="center" mt={5} style={{ flexWrap: 'nowrap', alignItems: 'center' }}>
+          <Rating
+            value={movie.rating / 2} // Normalize to 5-star scale
+            fractions={2}
+            count={5}
+            size="xs"
+            readOnly
+          />
+          {movie.rating > 0 && (
+            <Text size="xs" ml={4} style={{ whiteSpace: 'nowrap', lineHeight: 1, display: 'flex', alignItems: 'center' }}>
+              {movie.rating.toFixed(1)}
+              {movie.votes !== undefined && movie.votes > 0 && (
+                <Text component="span" size="xs" c="dimmed" ml={3} style={{ display: 'inline', lineHeight: 1 }}>
+                  {" "}({formatVotes(movie.votes)})
+                </Text>
+              )}
+            </Text>
+          )}
+        </Flex>
+      </Box>
     </Card>
   );
 });
@@ -205,7 +208,7 @@ const MovieListComponent = ({
     return (
       <Grid>
         {movies.map((movie) => (
-          <Grid.Col key={movie.id} span={{ base: 12, sm: 6, md: 4, lg: 2.4 }} style={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid.Col key={movie.id} span={12} xs={12} sm={6} md={4} lg={2.4} style={{ display: 'flex', justifyContent: 'center' }}>
             <MovieCard 
               movie={movie}
               isFavorite={favoriteMovies.includes(movie.id)}

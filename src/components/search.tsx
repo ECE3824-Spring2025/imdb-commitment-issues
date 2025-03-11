@@ -63,7 +63,7 @@ export default function Search() {
       <TextInput
         value={inputValue}
         onChange={(event) => setInputValue(event.currentTarget.value)}
-        leftSection={<IconSearch size={16} />}
+        icon={<IconSearch size={16} />}
         styles={{
           input: {
             fontWeight: 500,
