@@ -4,9 +4,8 @@ This project is a movie library webapp that allows users to view the top 100 mov
 ## Installation
 ### Prerequisites
 - NPM: To run the client
-- IMDb Datasets
-    - https://datasets.imdbws.com/title.basics.tsv.gz
-    - https://datasets.imdbws.com/title.ratings.tsv.gz
+- PIP: To install main dependencies
+- WSL/MacOS/Linux: To run Redis server
 
 ### Steps
 Clone the repository:
@@ -17,13 +16,28 @@ git clone https://github.com/ECE3824-Spring2025/imdb-commitment-issues.git
 Create the environment
 ```
 cd imdb-commitment-issues
-py -3 -m venv .venv
-.venv\Scripts\activate
+python3 -m venv .venv
+```
+
+Activate the environment
+```
+. .venv/bin/activate
 ```
 
 Install dependencies
 ```
+npm install
 pip install -r requirements.txt
+```
+
+Install Redis
+```
+sudo apt install redis-server
+```
+
+Activate Redis server
+```
+redis-server
 ```
 
 Start the development server
