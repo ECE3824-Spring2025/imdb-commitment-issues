@@ -59,7 +59,9 @@ def store_tmdb_data():
 
         for item in movies:
             movie_id = f"tmdb_{item['id']}"
-            existing_movie = Movie.query.get(movie_id)
+            # existing_movie = Movie.query.get(movie_id)
+            existing_movie = db.session.get(Movie, movie_id)
+
 
             if not existing_movie:
                 genre_names = [TMDB_GENRES.get(genre_id, "Unknown") for genre_id in item.get("genre_ids", [])]

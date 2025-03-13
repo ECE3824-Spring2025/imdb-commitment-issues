@@ -20,13 +20,16 @@ def reset_database():
 
 def main():
     """Reset database and import fresh TMDb data."""
-    print("🔄 Resetting database...")
-    reset_database()
+    try:
+        print("🔄 Resetting database...")
+        reset_database()
 
-    print("📡 Fetching and importing TMDb data...")
-    store_tmdb_data()
-    
-    print("🎉 Database setup complete!")
+        print("📡 Fetching and importing TMDb data...")
+        store_tmdb_data()
+        
+        print("🎉 Database setup complete!")
+        return 0  # Success
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return 1  # Failure
 
-if __name__ == "__main__":
-    sys.exit(main())
