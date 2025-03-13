@@ -3,7 +3,7 @@ import { useState, createContext, useContext } from 'react';
 import { Box, Select, Text } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
 
-export type FormatType = 'Movie' | 'TV Show' | 'Any';
+export type FormatType = 'Movie' | 'Any';
 
 // Create a context to share the format state across components
 export const MovieFormatContext = createContext<{
@@ -34,7 +34,6 @@ export default function Format() {
   // Removed 'Any' from the data array
   const formatOptions: {value: FormatType, label: string}[] = [
     { value: 'Movie', label: 'Movie' },
-    { value: 'TV Show', label: 'TV Show' }
   ];
   
   return (

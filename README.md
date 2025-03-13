@@ -1,5 +1,5 @@
 ## Description
-This project is a movie library webapp that allows users to view the top 100 movies and tv shows found in IMDb Non-Commerical Dataset. Users are able to search for a specific movie or tv show and favorite it. They also can sort by the IMDb score and number of votes and the choose which movie genres to display.
+This project is a movie library webapp that allows users to view the top 100 movies found in IMDb Non-Commerical Dataset. Users are able to search for a specific movie and favorite it. They also can sort by the IMDb score and number of votes and the choose which movie genres to display.
 
 ## Installation
 ### Prerequisites
@@ -52,7 +52,7 @@ http://localhost:3000/
 
 ## Project Instructions
 ### Basic Usage
-1. Select a **format** (Movie/TV Show)
+1. Select a **format** (Movie)
 2. Select a **sorting option** (Most Popular/Top Rated/Favorited)
 3. Select a **genre** from the dropdown
 4. Browse the movie list

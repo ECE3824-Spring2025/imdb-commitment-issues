@@ -16,7 +16,7 @@ export default function NavigationBar({ width, buttonSpacing = 24 }: MenuProps) 
     <Box mb={24}>
       <Title size={28} mt={15} mb={13} ta="center">Commitment Issues</Title>
       <Container size={width || "xl"} px={3} style={{ margin: '0 auto' }}>
-        <Title size={20} mb={16}>Top Movies & TV Shows</Title>
+        <Title size={20} mb={16}>Top Movies</Title>
 
         {/* Navigation Buttons - Side by Side with adjustable spacing */}
         <Group spacing={buttonSpacing} align="flex-end" noWrap={false}>

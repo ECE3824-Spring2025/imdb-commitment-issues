@@ -74,7 +74,6 @@ function MovieContent() {
       if (formatType !== 'Any') {
         const formatMap: Partial<Record<FormatType, string>> = {
           'Movie': 'movie',
-          'TV Show': 'tvSeries'
         };
         
         const formatValue = formatMap[formatType];
