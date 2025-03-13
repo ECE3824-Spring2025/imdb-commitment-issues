@@ -4,6 +4,9 @@ from flask_cors import CORS
 
 import os
 
+# Force Flask to use the correct TMDb API key
+os.environ['TMDB_API_KEY'] = "61c678e1170ca246fbfbdeecc7aa373b"
+
 import sqlite3
 
 import time
