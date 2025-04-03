@@ -1,11 +1,21 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import os
 import sqlite3
 import time
 import functools
 import json
+import sys
 from contextlib import contextmanager
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask import send_from_directory
+
+
+# Add this block below to make models importable
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'database')))
+
+from models import db, Watchlist
+
 
 # TMDB API configuration
 TMDB_API_KEY = os.environ.get('TMDB_API_KEY', '')  # Set this environment variable
@@ -52,38 +62,40 @@ def cached(timeout=300):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            # Create a cache key
             cache_key = f"{func.__name__}:{str(args)}:{str(kwargs)}"
             current_time = time.time()
-            # Try Redis first if available
+
+            # Redis caching
             if redis_client:
                 try:
                     cached_data = redis_client.get(cache_key)
                     if cached_data:
                         print(f"Redis cache hit for {cache_key}")
-                        return json.loads(cached_data)
-                    # No cache hit, execute function
+                        return jsonify(json.loads(cached_data))  # Ensure it's serialized
                     result = func(*args, **kwargs)
-                    redis_client.setex(
-                        cache_key,
-                        timeout,
-                        json.dumps(result, default=str)
-                    )
-                    return result
+                    if isinstance(result, Response):  # If the result is a Response object
+                        return result  # Return it directly
+                    redis_client.setex(cache_key, timeout, json.dumps(result, default=str))
+                    return jsonify(result)
                 except Exception as e:
                     print(f"Redis error: {e}. Falling back to memory cache.")
-            # Memory cache fallback
+
+            # Memory caching
             if cache_key in memory_cache:
                 result, timestamp = memory_cache[cache_key]
                 if current_time - timestamp < timeout:
                     print(f"Memory cache hit for {cache_key}")
-                    return result
-            # Execute and cache in memory
+                    return jsonify(result)
+
             result = func(*args, **kwargs)
+            if isinstance(result, Response):  # If result is already a Response
+                return result  # Return it directly
             memory_cache[cache_key] = (result, current_time)
-            return result
+            return jsonify(result)
+
         return wrapper
     return decorator
+
 
 # Database connection context manager for safer handling
 @contextmanager
@@ -213,22 +225,30 @@ def get_movie_poster(movie_id):
 def get_movies():
     try:
         start_time = time.time()
+
         # Get parameters from request for pagination
         page = request.args.get('page', 1, type=int)
         page_size = request.args.get('pageSize', 100, type=int)
+
         with db_connection() as conn:
             cursor = conn.cursor()
+
             # Get total count efficiently
             cursor.execute("SELECT COUNT(*) FROM movies")
             total_count = cursor.fetchone()[0]
+
             # Calculate offset for pagination
             offset = (page - 1) * page_size
+
             # Query with all needed data in one go
             query = """
                 SELECT 
                     m.id, 
                     m.primary_title, 
+                    m.original_title,
                     m.title_type,
+                    m.start_year,
+                    m.poster_url,
                     r.average_rating,
                     r.num_votes,
                     GROUP_CONCAT(g.name) as genres
@@ -245,40 +265,48 @@ def get_movies():
                 LIMIT ? OFFSET ?
             """
             cursor.execute(query, (page_size, offset))
+
             # Process results
             movies = []
             for row in cursor.fetchall():
-                # Parse genres from GROUP_CONCAT result
                 genres = row['genres'].split(',') if row['genres'] else []
                 movies.append({
                     'id': row['id'],
                     'primary_title': row['primary_title'],
+                    'original_title': row['original_title'],
                     'title_type': row['title_type'],
+                    'start_year': row['start_year'],
+                    'poster_url': row['poster_url'],
                     'rating': {
                         'average_rating': row['average_rating'] or 0,
                         'num_votes': row['num_votes'] or 0
                     },
                     'genres': genres
                 })
-        # Calculate elapsed time
+
         elapsed_time = time.time() - start_time
-        # Return response
-        return jsonify({
-            'movies': movies,
+        response = {
+            'movies': movies,  # Ensure 'movies' key is here
             'total': total_count,
             'page': page,
             'pageSize': page_size,
             'pages': (total_count + page_size - 1) // page_size,
             'query_time_ms': round(elapsed_time * 1000, 2),
             'cache_type': 'redis' if redis_client else 'memory'
-        })
+        }
+        return jsonify(response)  # Ensure jsonify is being used
+
     except Exception as e:
         print(f"Error in get_movies: {e}")
         return jsonify({
             'error': str(e),
             'message': 'Failed to retrieve movies',
-            'movies': []
-        }), 500
+            'movies': []  # Return an empty list if there's an error
+        })
+
+
+
+
         
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -416,6 +444,177 @@ def get_genres():
             'message': 'Failed to retrieve genres',
             'genres': []
         }), 500
+
+    
+@app.route('/api/signin', methods=['POST'])
+def signin():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+
+        if not email or not password:
+            return jsonify({'error': 'Missing email or password'}), 400
+
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, password_hash, username, email, profile_image FROM users WHERE email = ?", (email,))
+            user = cursor.fetchone()
+
+            if user:
+                if check_password_hash(user["password_hash"], password):
+                    return jsonify({
+                        'success': True,
+                        'user_id': user["id"],
+                        'username': user["username"],
+                        'email': user["email"],
+                        'profile_image': user["profile_image"]
+                    })
+                else:
+                    return jsonify({'success': False, 'error': 'Incorrect password'}), 401
+            else:
+                return jsonify({'success': False, 'error': 'User not found'}), 404
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+
+
+@app.route('/api/signup', methods=['POST'])
+def signup():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+        username = data.get('username')
+
+        if not email or not password or not username:
+            return jsonify({'error': 'Missing email, password, or username'}), 400
+
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            # Check for duplicate email or username
+            cursor.execute("SELECT id FROM users WHERE email = ? OR username = ?", (email, username))
+            if cursor.fetchone():
+                return jsonify({'error': 'Email or username already exists'}), 409
+
+            password_hash = generate_password_hash(password)
+            cursor.execute(
+                "INSERT INTO users (email, password_hash, username) VALUES (?, ?, ?)",
+                (email, password_hash, username)
+            )
+            conn.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+UPLOAD_FOLDER = os.path.join(os.path.dirname(current_dir), 'public', 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/api/upload_profile_image/<int:user_id>', methods=['POST'])
+def upload_profile_image(user_id):
+    try:
+        if 'image' not in request.files:
+            print("No image file in request")
+            return jsonify({'error': 'No image provided'}), 400
+
+        file = request.files['image']
+        if file.filename == '':
+            print("Empty filename received")
+            return jsonify({'error': 'Empty filename'}), 400
+
+        print(f"Received file: {file.filename}")
+        
+        from werkzeug.utils import secure_filename  # ensure this import exists
+        filename = secure_filename(file.filename)
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        print(f"Saving file to: {save_path}")
+        
+        file.save(save_path)
+        rel_path = f"uploads/{filename}"
+
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET profile_image = ? WHERE id = ?", (rel_path, user_id))
+            conn.commit()
+
+        return jsonify({'success': True, 'profile_image': rel_path})
+    
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/uploads/<path:filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/api/watchlist', methods=['POST'])
+def add_to_watchlist():
+    try:
+        data = request.get_json()
+        print("Watchlist data received:", data)  # Debug
+
+        user_id = data.get('user_id')
+        movie_id = data.get('movie_id')
+
+        if not user_id or not movie_id:
+            return jsonify({'error': 'Missing user_id or movie_id'}), 400
+
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            # Check if the movie is already in watchlist
+            cursor.execute("SELECT 1 FROM watchlist WHERE user_id = ? AND movie_id = ?", (user_id, movie_id))
+            if cursor.fetchone():
+                return jsonify({'error': 'Movie already in watchlist'}), 409
+
+            # Add to watchlist
+            cursor.execute("INSERT INTO watchlist (user_id, movie_id) VALUES (?, ?)", (user_id, movie_id))
+            conn.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/api/watchlist/<int:user_id>', methods=['GET'])
+def get_watchlist(user_id):
+    try:
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT movie_id FROM watchlist WHERE user_id = ?", (user_id,))
+            movies = [row['movie_id'] for row in cursor.fetchall()]
+        return jsonify({'movies': movies})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/watchlist', methods=['DELETE'])
+def remove_from_watchlist():
+    try:
+        data = request.get_json()
+        user_id = data.get('user_id')
+        movie_id = data.get('movie_id')
+
+        if not user_id or not movie_id:
+            return jsonify({'error': 'Missing user_id or movie_id'}), 400
+
+        with db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM watchlist WHERE user_id = ? AND movie_id = ?", (user_id, movie_id))
+            conn.commit()
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     print(f"Starting server on port 8000")

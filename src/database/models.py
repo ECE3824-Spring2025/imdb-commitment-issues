@@ -1,7 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+import json
 
 db = SQLAlchemy()
 
+# Association table for many-to-many between movies and genres
 movie_genre_association = db.Table(
     'movie_genre',
     db.Column('movie_id', db.String, db.ForeignKey('movies.id')),
@@ -26,11 +29,19 @@ class Movie(db.Model):
     original_title = db.Column(db.String)
     start_year = db.Column(db.Integer, nullable=True)
     poster_url = db.Column(db.String, nullable=True)
+    description = db.Column(db.Text, nullable=True)
+    runtime = db.Column(db.Integer, nullable=True)
+    actors = db.Column(db.Text, nullable=True)  # Stored as JSON string
 
     genres = db.relationship("Genre", secondary=movie_genre_association, backref="movies")
     rating = db.relationship("Rating", back_populates="movie", uselist=False)
 
     def to_dict(self):
+        try:
+            parsed_actors = json.loads(self.actors) if self.actors else []
+        except Exception:
+            parsed_actors = []
+
         return {
             'id': self.id,
             'title_type': self.title_type,
@@ -38,6 +49,9 @@ class Movie(db.Model):
             'original_title': self.original_title,
             'start_year': self.start_year,
             'poster_url': self.poster_url,
+            'description': self.description,
+            'runtime': self.runtime,
+            'actors': parsed_actors,
             'genres': [genre.name for genre in self.genres],
             'rating': self.rating.to_dict() if self.rating else None
         }
@@ -56,3 +70,30 @@ class Rating(db.Model):
             'average_rating': self.average_rating,
             'num_votes': self.num_votes
         }
+
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password_hash = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, unique=True, nullable=True)
+    profile_image = db.Column(db.String, nullable=True)
+
+    watchlist = db.relationship('Watchlist', backref='user', lazy=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def __repr__(self):
+        return f"<User(email='{self.email}', username='{self.username}')>"
+
+class Watchlist(db.Model):
+    __tablename__ = 'watchlist'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    movie_id = db.Column(db.String, nullable=False)  # could also be FK to movies.id
