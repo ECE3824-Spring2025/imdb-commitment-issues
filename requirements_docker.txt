@@ -1,0 +1,7 @@
+Flask
+Flask-Cors
+Flask-SQLAlchemy
+pymysql
+redis
+requests
+python-dotenv

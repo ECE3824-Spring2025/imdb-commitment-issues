@@ -24,42 +24,39 @@ function MovieContent() {
 
   const fetchMovies = useCallback(async () => {
     try {
-        setIsLoading(true);
-        setError(null);
+      setIsLoading(true);
+      setError(null);
 
-        const res = await fetch('/api/movies?pageSize=200');
-        if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
+      const res = await fetch('/api/movies?pageSize=200');
+      if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
 
-        const data = await res.json();
-        if (data && data.movies) {
-            const transformedMovies: Movie[] = data.movies.map((movie: any, index: number) => ({
-                id: movie.id,
-                title: movie.primary_title,
-                imageUrl: movie.poster_url || '',
-                rating: movie.rating?.average_rating || 0,
-                votes: movie.rating?.num_votes || 0,
-                type: movie.title_type,
-                genres: movie.genres || [],
-                rank: index + 1,
-                description: movie.description || 'N/A',
-                releaseDate: movie.start_year ? `${movie.start_year}` : 'N/A',
-                runtime: movie.runtime || 0,
-                actors: movie.actors ? JSON.parse(movie.actors) : []
-            }));
-            setAllMovies(transformedMovies);
-        } else {
-            throw new Error("Movies data is undefined");
-        }
+      const data = await res.json();
+      if (data && data.movies) {
+        const transformedMovies: Movie[] = data.movies.map((movie: any, index: number) => ({
+          id: movie.id,
+          title: movie.primary_title,
+          imageUrl: movie.poster_url || '',
+          rating: movie.rating?.average_rating || 0,
+          votes: movie.rating?.num_votes || 0,
+          type: movie.title_type,
+          genres: movie.genres || [],
+          rank: index + 1,
+          description: movie.description || 'N/A',
+          releaseDate: movie.start_year ? `${movie.start_year}` : 'N/A',
+          runtime: movie.runtime || 0,
+          actors: movie.actors || [] // ✅ No JSON.parse needed, already an array
+        }));
+        setAllMovies(transformedMovies);
+      } else {
+        throw new Error('Movies data is undefined');
+      }
     } catch (err: any) {
-        console.error('Failed to fetch movies:', err);
-        setError(err.message || 'An unknown error occurred');
+      console.error('Failed to fetch movies:', err);
+      setError(err.message || 'An unknown error occurred');
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-}, []);
-
-
-  
+  }, []);
 
   useEffect(() => {
     fetchMovies();

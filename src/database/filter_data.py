@@ -4,10 +4,15 @@ import redis
 import json
 from models import db, Movie, Genre, Rating
 from flask import Flask
+from dotenv import load_dotenv
+from models import db, Movie, Genre, Rating
 
-API_KEY = "61c678e1170ca246fbfbdeecc7aa373b"  # replace with your real key
-CACHE_EXPIRY = 86400  # 24 hours cache duration
+load_dotenv()  # Load variables from .env
 
+API_KEY = os.environ.get("TMDB_API_KEY", "")  # Use environment variable
+CACHE_EXPIRY = 86400  # 24 hours
+
+# Redis setup
 redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 TMDB_GENRES = {
@@ -18,24 +23,14 @@ TMDB_GENRES = {
 }
 
 def create_app():
-    """Initialize Flask App and Database."""
+    """Initialize Flask App and connect to AWS RDS MySQL."""
     app = Flask(__name__)
 
-    # Use absolute path
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    db_relative_path = os.path.join(current_dir, "instance", "imdb_movies.db")
-
-    # Ensure the instance directory exists
-    os.makedirs(os.path.dirname(db_relative_path), exist_ok=True)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_relative_path}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://comp3_webapp:imdbcomp3proj@imdb-commitment-issues.cxnec0l3uyax.us-east-1.rds.amazonaws.com:3306/imdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
     return app
-
-
-
 
 def fetch_top_rated_movies():
     all_movies = []
@@ -62,7 +57,7 @@ def fetch_movie_details(tmdb_id):
 def store_tmdb_data():
     app = create_app()
     with app.app_context():
-        db.create_all()
+        db.create_all()  # Make sure tables exist
         movies = fetch_top_rated_movies()
 
         for item in movies:
