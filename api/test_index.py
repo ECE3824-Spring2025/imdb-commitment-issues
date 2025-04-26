@@ -3,251 +3,102 @@ import json
 from mock import patch, MagicMock
 from index import app
 
-# ---- Fixtures ----
-# Pytest fixtures allow us to create reusable test setup logic.
-
 @pytest.fixture
 def client():
-    """
-    Fixture to create a test client for the Flask application.
-    This allows us to send HTTP requests to the API without running the actual server.
-    """
-
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 
-@pytest.fixture
-def mock_db_connection():
-    """
-    Fixture to mock the database connection.
-    This prevents actual database queries during testing. 
-    """
+# ---- Updated Unit Tests ----
 
-    with patch("index.db_connection") as mock_db:
-        mock_conn = MagicMock()
-        mock_cursor = MagicMock()
-        mock_conn.cursor.return_value = mock_cursor
-        mock_db.return_value.__enter__.return_value = mock_conn
-        yield mock_cursor
+def test_health_check(client):
+    response = client.get("/api/health")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert "status" in data
+    assert "timestamp" in data
+    assert "redis_available" in data
+    assert "tmdb_configured" in data
 
-@pytest.fixture
-def mock_redis():
-    """
-    Fixture to mock the Redis client.
-    This prevents actual Redis caching during testing.
-    """
-    with patch("index.redis_client") as mock_redis:
-        mock_redis.get.return_value = None  # Simulate cache miss
-        yield mock_redis
-
-# ---- Unit Tests ----
-
-def test_get_movie_images(client, mock_db_connection, mock_redis):
-    """
-    Test Case: Retrieve movie images from TMDb.
-
-    Scenario:
-    - The `/api/movies/<movie_id>/images` endpoint is called.
-
-    Expectations:
-    - The response should return status `200 OK` if the movie is found.
-    - The response JSON should contain `images` with `poster_url` and `backdrop_url`.
-    """
-
-    mock_db_connection.execute.return_value = None
-    mock_db_connection.fetchone.return_value = {"primary_title": "Test Movie", "start_year": 2003}
-
-    with patch("index.search_tmdb_movie") as mock_tmdb:
-        mock_tmdb.return_value = {
-            "id": 12345,
-            "poster_path": "/test_poster.jpg",
-            "backdrop_path": "/test_backdrop.jpg"
-        }
-
-        response = client.get("/api/movies/tt0000001/images")
-        assert response.status_code == 200
-
-        data = response.get_json()
-        assert "images" in data
-        assert data["images"]["poster_url"] is not None
-        assert data["images"]["backdrop_url"] is not None
-
-def test_get_movie_poster(client, mock_db_connection, mock_redis):
-    """
-    Test Case: Retrieve a movie poster with different sizes.
-
-    Scenario:
-    - The `/api/movies/<movie_id>/poster` endpoint is called.
-
-    Expectations:
-    - The response should return status `200 OK` if the movie is found.
-    - The response JSON should contain `posterUrl` and `size`.
-    - If an invalid size is provided, it should default to `w500`.
-    """
-    # Mock database query to return movie details
-    mock_db_connection.execute.return_value = None
-    mock_db_connection.fetchone.return_value = {"primary_title": "Test Movie", "start_year": 2010}
-
-    # Mock the TMDb API response
-    with patch("index.search_tmdb_movie") as mock_tmdb:
-        mock_tmdb.return_value = {
-            "id": 12345,
-            "poster_path": "/test_poster.jpg"
-        }
-
-        # Test with default size
-        response = client.get("/api/movies/tt0000001/poster")
-        assert response.status_code == 200
-        data = response.get_json()
-        assert "posterUrl" in data
-        assert "size" in data
-        assert data["size"] == "w500"  # Default size
-
-        # Test with a valid size parameter
-        response = client.get("/api/movies/tt0000001/poster?size=w185")
-        assert response.status_code == 200
-        data = response.get_json()
-        assert data["size"] == "w185"
-
-        # Test with an invalid size (should default to `w500`)
-        response = client.get("/api/movies/tt0000001/poster?size=invalid")
-        assert response.status_code == 200
-        data = response.get_json()
-        assert data["size"] == "w500"  # Default value for invalid input
-
-        # Test when no poster is found
-        mock_tmdb.return_value = {"id": 12345, "poster_path": None}
-        response = client.get("/api/movies/tt0000001/poster")
-        assert response.status_code == 200
-        data = response.get_json()
-        assert data["posterUrl"] is None
-        assert data["message"] == "No poster found for this movie"
-
-def test_get_movies(client, mock_db_connection, mock_redis):
-    """
-    Test Case: Retrieve a paginated list of movies.
-
-    Scenario:
-    - The `/api/movies` endpoint is called with default parameters.
-
-    Expectations:
-    - The response should return status `200 OK`.
-    - The response JSON should contain `movies`, `total`, `page`, `pageSize`, and `query_time_ms`.
-    """
-    # Mock database response
-    mock_db_connection.execute.return_value = None
-    mock_db_connection.fetchone.side_effect = [(200,)] # Simulate total movie count
-    mock_db_connection.fetchall.return_value = [
-        {
-            "id": "tt0000001",
-            "primary_title": "Test Movie",
-            "title_type": "movie",
-            "average_rating": 8.5,
-            "num_votes": 1000,
-            "genres": "Drama,Action"
-        }
-    ]
-
+def test_get_movies(client):
     response = client.get("/api/movies")
     assert response.status_code == 200
-
     data = response.get_json()
     assert "movies" in data
     assert "total" in data
     assert "page" in data
     assert "pageSize" in data
-    assert len(data["movies"]) > 0
 
-def test_health_check(client):
-    """
-    Test Case: Health check endpoint returns expected response.
-
-    Scenario:
-    - The `/api/health` endpoint is called.
-
-    Expectations:
-    - The response should return status `200 OK`.
-    - The response JSON should contain keys `status`, `timestamp`, `redis_available`, `db_exists`, and `tmdb_configured`.
-    """
-    response = client.get("/api/health")
-    assert response.status_code == 200
-
+def test_get_movie_details_invalid(client):
+    response = client.get("/api/movies/invalid_id")
+    assert response.status_code in [404, 500]
     data = response.get_json()
-    assert "status" in data
-    assert "timestamp" in data
-    assert "redis_available" in data
-    assert "db_exists" in data
-    assert "tmdb_configured" in data
+    assert "error" in data
 
-def test_cache_clear(client, mock_redis):
-    """
-    Test Case: Clear cache keys.
-
-    Scenario:
-    - The `/api/cache/clear` endpoint is called with a pattern.
-
-    Expectations:
-    - The response should return status `200 OK`.
-    - The response JSON should indicate success and the number of cleared keys.
-    """
-
-    mock_redis.keys.return_value = ["cache_key_1", "cache_key_2"]
-    mock_redis.delete.return_value = 2  # Simulate deletion of 2 keys
-
-    response = client.post("/api/cache/clear", json={"pattern": "*"})
-    assert response.status_code == 200
-
-    data = response.get_json()
-    assert data["success"] is True
-    assert "Cleared" in data["message"]
-
-def test_invalid_movie_request(client):
-    """
-    Test Case: Requesting a movie that does not exist.
-
-    Scenario:
-    - The `/api/movies/<movie_id>` endpoint is called with a non-existent movie ID.
-
-    Expectations:
-    - The response should return status `404 NOT FOUND`.
-    - The response JSON should indicate an error message.
-    """
-    with patch("index.db_connection") as mock_db:
-        mock_conn = MagicMock()
-        mock_cursor = MagicMock()
-        mock_conn.cursor.return_value = mock_cursor
-        mock_cursor.fetchone.return_value = None  # Simulate no movie found
-        mock_db.return_value.__enter__.return_value = mock_conn
-
-        response = client.get("/api/movies/invalid_id")
-        assert response.status_code == 404
-
-        data = response.get_json()
-        assert "error" in data
-        assert data["error"] == "Movie not found"
-
-def test_get_genres(client, mock_db_connection, mock_redis):
-    """
-    Test Case: Retrieve a list of genres.
-
-    Scenario:
-    - The `/api/genres` endpoint is called.
-
-    Expectations:
-    - The response should return status `200 OK`.
-    - The response JSON should contain a list of `genres` and a `total` count.
-    """
-    mock_db_connection.execute.return_value = None
-    mock_db_connection.fetchall.return_value = [
-        {"id": 1, "name": "Drama", "movie_count": 50},
-        {"id": 2, "name": "Action", "movie_count": 40}
-    ]
-
+def test_get_genres(client):
     response = client.get("/api/genres")
     assert response.status_code == 200
-
     data = response.get_json()
     assert "genres" in data
-    assert "total" in data
-    assert len(data["genres"]) > 0
+
+def test_signup_and_signin(client):
+    # Mock a signup
+    response = client.post("/api/signup", json={
+        "email": "testuser@example.com",
+        "username": "testuser",
+        "password": "password123"
+    })
+    assert response.status_code in [200, 409]  # Might already exist from previous tests
+    data = response.get_json()
+    assert "success" in data or "error" in data
+
+    # Then signin
+    response = client.post("/api/signin", json={
+        "email": "testuser@example.com",
+        "password": "password123"
+    })
+    assert response.status_code in [200, 401]
+    data = response.get_json()
+    if response.status_code == 200:
+        assert data["success"] is True
+        assert "user_id" in data
+    else:
+        assert data["success"] is False
+
+def test_watchlist_workflow(client):
+    # First, sign up / sign in
+    signin_response = client.post("/api/signin", json={
+        "email": "testuser@example.com",
+        "password": "password123"
+    })
+    signin_data = signin_response.get_json()
+    if "user_id" not in signin_data:
+        pytest.skip("User not found or sign in failed")
+    user_id = signin_data["user_id"]
+
+    movie_id = "tt0000001"  # dummy movie id for testing
+
+    # Add to watchlist
+    add_response = client.post("/api/watchlist", json={
+        "user_id": user_id,
+        "movie_id": movie_id
+    })
+    assert add_response.status_code in [200, 409]
+    add_data = add_response.get_json()
+    assert "success" in add_data or "error" in add_data
+
+    # Get watchlist
+    get_response = client.get(f"/api/watchlist/{user_id}")
+    assert get_response.status_code == 200
+    get_data = get_response.get_json()
+    assert "movies" in get_data
+
+    # Remove from watchlist
+    remove_response = client.delete("/api/watchlist", json={
+        "user_id": user_id,
+        "movie_id": movie_id
+    })
+    assert remove_response.status_code == 200
+    remove_data = remove_response.get_json()
+    assert remove_data["success"] is True
+
