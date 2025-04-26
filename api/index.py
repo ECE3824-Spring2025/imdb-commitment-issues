@@ -118,7 +118,7 @@ def get_movies():
 @app.route('/api/movies/<movie_id>', methods=['GET'])
 def get_movie_details(movie_id):
     try:
-        movie = Movie.query.get(movie_id)
+        movie = db.session.get(Movie, movie_id)
         if not movie:
             return jsonify({'error': 'Movie not found'}), 404
         return movie.to_dict()
