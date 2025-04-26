@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/database')))
 import pytest
 from unittest.mock import patch, MagicMock
 from import_data import main, reset_database, verify_inserted_data

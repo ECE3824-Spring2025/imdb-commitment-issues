@@ -1,9 +1,11 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/database')))
 import pytest
 import json
 from unittest.mock import patch, MagicMock
 from filter_data import store_tmdb_data, fetch_top_rated_movies, create_app, redis_client
 from models import db, Movie, Genre, Rating
-
 
 # ---- Fixtures ----
 # Pytest fixtures allow us to create reusable test setup logic.
