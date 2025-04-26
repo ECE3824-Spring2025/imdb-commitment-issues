@@ -14,4 +14,5 @@ pandas==2.0.3
 numpy==1.24.4
 pytest==8.3.5
 pymysql==1.1.0
-dotenv
+dotenv==0.9.9
+mock==5.2.0
