@@ -73,15 +73,17 @@ jobs:
           # Build frontend again on server (safe if anything changed)
           npm run build
 
-          # Kill old Flask server
+          # Kill old Flask server if running
           pkill -f "python index.py" || true
 
-          # Kill old Next.js server
+          # Kill old Next.js frontend server if running
           pkill -f "node" || true
 
           # Start Flask backend
+          cd /home/ubuntu/imdb-commitment-issues/api
           nohup python3 index.py &
 
-          # Start Next.js frontend (on 0.0.0.0 so it's public)
+          # Start frontend (Next.js)
+          cd /home/ubuntu/imdb-commitment-issues
           nohup npm run start -- -H 0.0.0.0 -p 3000 &
         EOF
