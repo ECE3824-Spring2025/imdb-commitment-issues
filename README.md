@@ -213,6 +213,16 @@ Or with Docker:
 pip install -r requirements-docker.txt
 docker-compose up --build
 ```
-
+aws
 ---
 
+## Project Instructions
+### Basic Usage
+1. Select a **format** (Movie)
+2. Select a **sorting option** (Most Popular/Top Rated/Favorited)
+3. Select a **genre** from the dropdown
+4. Browse the movie list
+5. Click the **favorite** button to add movie to favorited or remove it from the list
+
+<!-- Trigger CI/CD Test -->
+master

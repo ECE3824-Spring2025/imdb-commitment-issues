@@ -1,0 +1,48 @@
+name: Full Stack CI Pipeline (Next.js + Flask)
+
+on:
+  push:
+    branches:
+      - master
+      - zephanj
+  pull_request:
+    branches:
+      - master
+      - zephanj
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # --- Frontend Setup (Next.js / Node) ---
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Frontend dependencies
+      run: |
+        npm install
+
+    - name: Build Frontend
+      run: |
+        npm run build
+
+    # --- Backend Setup (Flask / Python) ---
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Backend dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Backend tests
+      run: |
+        pytest tests/

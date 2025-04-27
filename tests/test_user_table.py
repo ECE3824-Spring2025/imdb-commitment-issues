@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/database')))
 import pytest
 from flask import Flask
 from models import db, User
@@ -8,7 +10,7 @@ from sqlalchemy import inspect
 @pytest.fixture(scope='module')
 def app():
     app = Flask(__name__)
-    db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'instance', 'imdb_movies.db'))
+    db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'database', 'instance', 'imdb_movies.db'))
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
