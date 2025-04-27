@@ -48,7 +48,7 @@ jobs:
         pip install pytest
         pytest tests/
 
-    # --- Deploy to EC2 ---
+    # --- SSH Setup ---
     - name: Set up SSH key
       run: |
         mkdir -p ~/.ssh
@@ -59,13 +59,29 @@ jobs:
       run: |
         ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
+    # --- Deploy to EC2 ---
     - name: Deploy to EC2
       run: |
         ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/imdb-commitment-issues   # <- Make sure this matches your project folder on EC2
-          git pull origin master
+          cd /home/ubuntu/imdb-commitment-issues
+          git fetch origin master
+          git reset --hard origin/master
+
+          # Install updated dependencies
           npm install
+
+          # Build frontend again on server (safe if anything changed)
           npm run build
-          pkill -f "python index.py" || true       # <- Updated for your index.py backend
+
+          # Kill old Flask server
+          pkill -f "python index.py" || true
+
+          # Kill old Next.js server
+          pkill -f "node" || true
+
+          # Start Flask backend
           nohup python3 index.py &
+
+          # Start Next.js frontend (on 0.0.0.0 so it's public)
+          nohup npm run start -- -H 0.0.0.0 -p 3000 &
         EOF
