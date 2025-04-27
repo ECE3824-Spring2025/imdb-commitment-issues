@@ -1,15 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Title,
-  Alert,
-  Anchor
-} from '@mantine/core';
+import { TextInput, PasswordInput, Button, Title, Alert, Anchor } from '@mantine/core';
 import { useRouter } from 'next/navigation';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://3.219.44.117:5001/api';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -22,7 +17,7 @@ export default function SignUpPage() {
   const handleSignup = async () => {
     setError('');
     try {
-      const res = await fetch('http://localhost:8000/api/signup', {
+      const res = await fetch(`${API_URL}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, username }),
@@ -31,7 +26,7 @@ export default function SignUpPage() {
       const data = await res.json();
       if (data.success) {
         setSuccess(true);
-        setTimeout(() => router.push('/signin'), 1000); // Redirect after success
+        setTimeout(() => router.push('/signin'), 1000);
       } else {
         setError(data.error || 'Signup failed');
       }

@@ -7,17 +7,17 @@ import json
 import sys
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv 
+from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv() 
+# Load environment variables
+load_dotenv()
 
 # Allow imports from /src/database/models.py
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'database')))
 from models import db, Movie, Genre, Rating, User, Watchlist
 
 # TMDb setup
-TMDB_API_KEY = os.getenv('TMDB_API_KEY', '')  # <-- Updated: now from .env
+TMDB_API_KEY = os.getenv('TMDB_API_KEY', '')
 TMDB_BASE_URL = "https://api.themoviedb.org/3"
 TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
 
@@ -32,7 +32,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Connect to AWS RDS MySQL
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'mysql+pymysql://comp3_webapp:imdbcomp3proj@imdb-commitment-issues.cxnec0l3uyax.us-east-1.rds.amazonaws.com:3306/imdb')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', '')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -52,7 +52,7 @@ if HAS_REDIS:
     except Exception:
         redis_client = None
 
-# Caching decorator
+# --- Caching decorator ---
 def cached(timeout=300):
     def decorator(func):
         @functools.wraps(func)
@@ -82,7 +82,7 @@ def cached(timeout=300):
         return wrapper
     return decorator
 
-# -- API Routes --
+# --- API Routes ---
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -140,18 +140,26 @@ def get_genres():
 def signup():
     try:
         data = request.get_json()
-        if not data['email'] or not data['password'] or not data['username']:
+
+        email = data.get('email', '').strip().lower()
+        username = data.get('username', '').strip()
+        password = data.get('password', '').strip()
+
+        if not email or not username or not password:
             return jsonify({'error': 'Missing required fields'}), 400
 
-        if User.query.filter((User.email == data['email']) | (User.username == data['username'])).first():
+        if len(password) < 6:
+            return jsonify({'error': 'Password must be at least 6 characters long'}), 400
+
+        if User.query.filter((User.email == email) | (User.username == username)).first():
             return jsonify({'error': 'Email or username already exists'}), 409
 
-        new_user = User(email=data['email'], username=data['username'])
-        new_user.set_password(data['password'])
+        new_user = User(email=email, username=username)
+        new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({'success': True})
+        return jsonify({'success': True}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -159,8 +167,15 @@ def signup():
 def signin():
     try:
         data = request.get_json()
-        user = User.query.filter_by(email=data['email']).first()
-        if user and user.check_password(data['password']):
+
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '').strip()
+
+        if not email or not password:
+            return jsonify({'error': 'Missing email or password'}), 400
+
+        user = User.query.filter_by(email=email).first()
+        if user and user.check_password(password):
             return jsonify({
                 'success': True,
                 'user_id': user.id,
@@ -168,7 +183,7 @@ def signin():
                 'email': user.email,
                 'profile_image': user.profile_image
             })
-        return jsonify({'success': False, 'error': 'Invalid credentials'}), 401
+        return jsonify({'error': 'Invalid credentials'}), 401
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -228,5 +243,5 @@ def upload_profile_image(user_id):
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001, debug=True)

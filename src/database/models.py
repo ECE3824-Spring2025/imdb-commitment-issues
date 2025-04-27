@@ -76,7 +76,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    username = db.Column(db.String(255), unique=True, nullable=True)
+    username = db.Column(db.String(255), unique=True, nullable=False)  # ✅ username must NOT be nullable
     profile_image = db.Column(db.String(512), nullable=True)
 
     watchlist = db.relationship('Watchlist', backref='user', lazy=True)
@@ -87,6 +87,14 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'username': self.username,
+            'profile_image': self.profile_image
+        }
+
     def __repr__(self):
         return f"<User(email='{self.email}', username='{self.username}')>"
 
@@ -95,4 +103,4 @@ class Watchlist(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    movie_id = db.Column(db.String(255), nullable=False)  # Optional: can add FK to movies.id
+    movie_id = db.Column(db.String(255), nullable=False)  # Optional FK to movies.id
