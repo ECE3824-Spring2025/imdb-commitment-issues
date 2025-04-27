@@ -11,7 +11,7 @@ on:
       - zephanj
 
 jobs:
-  build-and-test:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -45,4 +45,27 @@ jobs:
 
     - name: Run Backend tests
       run: |
+        pip install pytest
         pytest tests/
+
+    # --- Deploy to EC2 ---
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Add EC2 to known hosts
+      run: |
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to EC2
+      run: |
+        ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/ubuntu/imdb-commitment-issues   # <- Make sure this matches your project folder on EC2
+          git pull origin master
+          npm install
+          npm run build
+          pkill -f "python index.py" || true       # <- Updated for your index.py backend
+          nohup python3 index.py &
+        EOF
