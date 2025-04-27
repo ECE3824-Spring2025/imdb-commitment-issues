@@ -62,10 +62,11 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
-          cd /home/ubuntu/imdb-commitment-issues   # <- Make sure this matches your project folder on EC2
-          git pull origin master
+          cd /home/ubuntu/imdb-commitment-issues
+          git fetch origin master
+          git reset --hard origin/master
           npm install
           npm run build
-          pkill -f "python index.py" || true       # <- Updated for your index.py backend
+          pkill -f "python index.py" || true
           nohup python3 index.py &
         EOF
