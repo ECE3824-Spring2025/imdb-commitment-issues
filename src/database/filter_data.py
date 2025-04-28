@@ -13,7 +13,13 @@ API_KEY = os.environ.get("TMDB_API_KEY", "")  # Use environment variable
 CACHE_EXPIRY = 86400  # 24 hours
 
 # Redis setup
-redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+try:
+    import redis
+    redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+    redis_client.ping()  # test connection
+except (ImportError, redis.ConnectionError):
+    redis_client = None
+
 
 TMDB_GENRES = {
     28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy", 80: "Crime",

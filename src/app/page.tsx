@@ -10,6 +10,9 @@ import { MovieFilterProvider, useMovieFilter } from '@/components/filter';
 import { MovieFormatProvider, useMovieFormat, FormatType } from '@/components/format';
 import { MovieSearchProvider, useMovieSearch } from '@/components/search';
 
+// Make sure NEXT_PUBLIC_API_URL is available
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://3.219.44.117:5001';
+
 function MovieContent() {
   const { sortBy, favorites } = useMovieSort();
   const { selectedGenres } = useMovieFilter();
@@ -27,7 +30,7 @@ function MovieContent() {
       setIsLoading(true);
       setError(null);
 
-      const res = await fetch('/api/movies?pageSize=200');
+      const res = await fetch(`http://3.219.44.117:5001/api/movies?pageSize=200`);
       if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
 
       const data = await res.json();
@@ -44,7 +47,7 @@ function MovieContent() {
           description: movie.description || 'N/A',
           releaseDate: movie.start_year ? `${movie.start_year}` : 'N/A',
           runtime: movie.runtime || 0,
-          actors: movie.actors || [] // ✅ No JSON.parse needed, already an array
+          actors: movie.actors || []
         }));
         setAllMovies(transformedMovies);
       } else {

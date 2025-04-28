@@ -51,7 +51,7 @@ export default function Filter() {
             try {
                 setIsLoading(true);
 
-                const response = await fetch('/api/genres');
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/genres`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch genres: ${response.status}`);
@@ -63,17 +63,15 @@ export default function Filter() {
                     throw new Error('Invalid genres data from API');
                 }
 
-                // Transform API data to MultiSelect format with explicit type
+                // Transform API data to MultiSelect format
                 const transformed: GenreOption[] = data.genres.map((genre: Genre): GenreOption => ({
                     value: genre.name,
                     label: `${genre.name}`,
                     count: genre.count
                 }));
 
-                // Sort by count (descending) with explicit type handling
-                transformed.sort((a: GenreOption, b: GenreOption) => (b.count ?? 0) - (a.count ?? 0));
+                transformed.sort((a, b) => (b.count ?? 0) - (a.count ?? 0));
 
-                // Filter for distinct genre options
                 const distinctTransformed = transformed.reduce((acc: GenreOption[], curr: GenreOption) => {
                     if (!acc.find(item => item.value === curr.value)) {
                         acc.push(curr);
@@ -87,7 +85,7 @@ export default function Filter() {
                 console.error('Error fetching genres:', err);
                 setError(err.message || 'Failed to load genres');
 
-                // Fallback to hardcoded genres if API fails
+                // fallback hardcoded genres if API fails
                 setGenres([
                     { value: 'Drama', label: 'Drama' },
                     { value: 'Comedy', label: 'Comedy' },
@@ -112,8 +110,6 @@ export default function Filter() {
     }, []);
 
     const handleGenreChange = useCallback((value: string[]) => {
-        // Ensure that there are no misspelled genres being passed to the database
-
         const validGenres = value.map((genre) => {
             if (genre.toLowerCase() === "familv") {
                 return "Family";

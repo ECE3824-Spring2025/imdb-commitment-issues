@@ -1,21 +1,16 @@
 from flask import Flask
-from sqlalchemy import inspect
-from models import db, Watchlist, User  # User must be imported so FK is valid
+from models import db, Watchlist
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'instance', 'imdb_movies.db'))
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
 with app.app_context():
-    engine = db.engine
-    inspector = inspect(engine)
-
-    if not inspector.has_table('watchlist'):
-        Watchlist.__table__.create(bind=engine)
-        print("'watchlist' table created.")
-    else:
-        print("'watchlist' table already exists.")
+    db.create_all()
+    print("'watchlist' table checked/created if needed.")

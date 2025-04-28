@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { TextInput, PasswordInput, Button, Title, Alert, Anchor } from '@mantine/core';
 import { useRouter } from 'next/navigation';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://3.219.44.117:5001/api';
+
 export default function SignInPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -14,7 +16,7 @@ export default function SignInPage() {
   const handleSubmit = async () => {
     setError('');
     try {
-      const res = await fetch('http://localhost:8000/api/signin', {
+      const res = await fetch(`${API_URL}/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -35,7 +37,6 @@ export default function SignInPage() {
       setError('Server error');
     }
   };
-  
 
   return (
     <div style={{ maxWidth: 400, margin: '50px auto' }}>
