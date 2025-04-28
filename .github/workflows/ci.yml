@@ -63,17 +63,24 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          # Go into project directory
           cd /home/ubuntu/imdb-commitment-issues
+          
+          # Pull latest code
           git fetch origin master
           git reset --hard origin/master
 
-          # Install updated dependencies
+          # Install/update frontend (Node.js) dependencies
           npm install
 
-          # Build frontend again on server (safe if anything changed)
+          # Build frontend again
           npm run build
 
-          # Kill old Flask server if running
+          # Install/update backend (Python) dependencies
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+          # Kill old Flask backend server if running
           pkill -f "python index.py" || true
 
           # Kill old Next.js frontend server if running
@@ -83,7 +90,7 @@ jobs:
           cd /home/ubuntu/imdb-commitment-issues/api
           nohup python3 index.py &
 
-          # Start frontend (Next.js)
+          # Start Next.js frontend
           cd /home/ubuntu/imdb-commitment-issues
           nohup npm run start -- -H 0.0.0.0 -p 3000 &
         EOF
